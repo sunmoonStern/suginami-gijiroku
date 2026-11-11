@@ -21,7 +21,7 @@ import urllib.error
 import urllib.request
 
 BASE = "https://suginami.gijiroku.com/voices/voices/cgi/voiweb.exe"
-UA = "suginami-gijiroku-unofficial-viewer/0.1 (personal low-rate archiver)"
+UA = "suginami-gijiroku-unofficial-viewer/0.1 (low-rate archiver; +https://github.com/sunmoonStern/suginami-gijiroku)"
 HERE = os.path.dirname(os.path.abspath(__file__))
 RAW = os.path.join(HERE, "raw")
 INDEX = os.path.join(HERE, "index.json")
