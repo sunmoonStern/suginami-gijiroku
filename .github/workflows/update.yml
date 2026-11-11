@@ -12,6 +12,7 @@ permissions:
   contents: write   # raw/ と index.json をコミットするため
   pages: write
   id-token: write
+  issues: write     # 失敗時に Issue で通知するため
 
 concurrency:
   group: update
@@ -36,7 +37,7 @@ jobs:
         run: python3 fetch.py --delay 3
 
       - name: 取得データをコミット
-        if: github.event_name != 'push'
+        if: ${{ !cancelled() && github.event_name != 'push' }}
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
@@ -57,3 +58,42 @@ jobs:
           path: site
       - id: deploy
         uses: actions/deploy-pages@v4
+
+  # 失敗したら Issue を立てる(既に開いていればコメントを追記)。Issue の通知メールが届く。
+  notify-failure:
+    needs: update
+    if: ${{ failure() }}
+    runs-on: ubuntu-latest
+    env:
+      GH_TOKEN: ${{ github.token }}
+      GH_REPO: ${{ github.repository }}
+      TITLE: "会議録の自動更新が失敗しました"
+      RUN_URL: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
+    steps:
+      - run: |
+          body="$(TZ=Asia/Tokyo date '+%F %R') JST の実行 (${{ github.event_name }}) が失敗しました。
+          ログ: $RUN_URL"
+          num=$(gh issue list --state open --search "in:title $TITLE" --json number,title \
+                --jq "map(select(.title == \"$TITLE\"))[0].number // empty")
+          if [ -n "$num" ]; then
+            gh issue comment "$num" --body "$body"
+          else
+            gh issue create --title "$TITLE" --body "$body" --assignee "${{ github.repository_owner }}"
+          fi
+
+  # 成功したら、開いている失敗 Issue を自動で閉じる
+  close-failure-issue:
+    needs: update
+    if: ${{ success() }}
+    runs-on: ubuntu-latest
+    env:
+      GH_TOKEN: ${{ github.token }}
+      GH_REPO: ${{ github.repository }}
+      TITLE: "会議録の自動更新が失敗しました"
+      RUN_URL: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
+    steps:
+      - run: |
+          for num in $(gh issue list --state open --search "in:title $TITLE" --json number,title \
+                       --jq "map(select(.title == \"$TITLE\")) | .[].number"); do
+            gh issue close "$num" --comment "次の実行で復旧しました: $RUN_URL"
+          done
