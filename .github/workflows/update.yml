@@ -1,0 +1,59 @@
+name: 会議録の取得と公開
+
+on:
+  schedule:
+    - cron: "0 21 * * 0"   # 毎週月曜 06:00 JST (UTCで日曜21:00)
+  workflow_dispatch:        # Actions タブから手動実行
+  push:
+    branches: [main]
+    paths: ["build.py", ".github/workflows/update.yml"]
+
+permissions:
+  contents: write   # raw/ と index.json をコミットするため
+  pages: write
+  id-token: write
+
+concurrency:
+  group: update
+  cancel-in-progress: false
+
+jobs:
+  update:
+    runs-on: ubuntu-latest
+    timeout-minutes: 180
+    environment:
+      name: github-pages
+      url: ${{ steps.deploy.outputs.page_url }}
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: 杉並区のサーバーから新しい会議録を取得
+        if: github.event_name != 'push'
+        run: python3 fetch.py --delay 3
+
+      - name: 取得データをコミット
+        if: github.event_name != 'push'
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add raw index.json
+          if git diff --cached --quiet; then
+            echo "新しい会議録はありません"
+          else
+            git commit -m "会議録データ更新 $(TZ=Asia/Tokyo date +%F)"
+            git push
+          fi
+
+      - name: サイトを生成
+        run: BUILT_DATE=$(TZ=Asia/Tokyo date +%F) python3 build.py
+
+      - uses: actions/configure-pages@v5
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: site
+      - id: deploy
+        uses: actions/deploy-pages@v4

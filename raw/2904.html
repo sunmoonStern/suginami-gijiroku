@@ -1,0 +1,101 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML LANG="ja-JP">
+	<HEAD>
+		<META HTTP-EQUIV="Content-Type"			CONTENT="text/html; charset=Shift_JIS">
+		<META HTTP-EQUIV="Content-Language"		CONTENT="text/ja-JP">
+		<META HTTP-EQUIV="Content-Script-Type"	CONTENT="text/JavaScript">
+		<META HTTP-EQUIV="Content-Style-Type"	CONTENT="text/css">
+<TITLE></TITLE>
+<style TYPE="text/css">
+<!--
+body,table,td,th,tr,font {
+	font-family:'ＭＳ ゴシック';
+	font-size:100%;
+	letter-spacing:1px;
+	line-height:170%;
+}
+//-->
+</style>
+</HEAD>
+<BODY BGCOLOR="#ffffff" onLoad="init_h(); parent.hat.focus();">
+<SCRIPT LANGUAGE="JavaScript">
+var hitp = -1;
+	parent.comp_hat = 0;
+</SCRIPT>
+<A NAME="HUID481859"></A>令和　６年第４回臨時会<BR><BR>令和６年第４回臨時会<BR>　　　　　　　　　　杉　並　区　議　会　会　議　録　目　次<BR><BR>〇１２月２５日（第３４号）<BR>　出席議員　……………………………………………………………………………………１<BR>　出席説明員　…………………………………………………………………………………２<BR>　議事日程　……………………………………………………………………………………３<BR>　区長挨拶　……………………………………………………………………………………３<BR>　会期について　………………………………………………………………………………３<BR>　議案第１００号　令和６年度杉並区一般会計補正予算（第８号）<BR>　　　　　提案説明（渡辺副区長）　………………………………………………………４<BR>　総務財政委員会議案審査報告書　…………………………………………………………５<BR>　　議案第１００号<BR>　　　　　原案可決<BR>　区長挨拶　……………………………………………………………………………………６<BR>　議案説明資料　………………………………………………………………………………７<BR><P><FORM METHOD="POST"><INPUT TYPE="hidden" NAME="hitcount" VALUE="0"></FORM>
+<SCRIPT LANGUAGE="JavaScript">
+function get_view_no( huid ){
+	var i;
+	var cnt;
+	if( self.frames.name == 'hat' ){
+		parent.v_n_no=null; parent.v_n_shi_no=null;		parent.v_b_no=null; parent.v_b_shi_no=null;		cnt = parent.huid_list.length;
+		for( i=0; i<cnt; i++ ){
+			if( parseInt( huid ) > parseInt( parent.huid_list[i] ) ){
+				parent.v_b_no= i
+			}else if( parseInt( huid ) < parseInt( parent.huid_list[i] ) ){
+				if( parent.v_n_no==null ){
+					parent.v_n_no= i
+				}
+			}
+		}
+		cnt = parent.huid_shi_list.length;
+		for( i=0; i<cnt; i++ ){
+			if( parseInt( huid ) > parseInt( parent.huid_shi_list[i] ) ){
+				parent.v_b_shi_no= i
+			}else if( parseInt( huid ) < parseInt( parent.huid_shi_list[i] ) ){
+				if( parent.v_n_shi_no==null ){
+					parent.v_n_shi_no= i
+				}
+			}
+		}
+	}
+	if( self.frames.name == 'hat_02' ){
+		parent.v_n_tou_no=null;		parent.v_b_tou_no=null;		cnt = parent.huid_tou_list.length;
+		for( i=0; i<cnt; i++ ){
+			if( parseInt( huid ) > parseInt( parent.huid_tou_list[i] ) ){
+				parent.v_b_tou_no= i
+			}else if( parseInt( huid ) < parseInt( parent.huid_tou_list[i] ) ){
+				if( parent.v_n_tou_no==null ){
+					parent.v_n_tou_no= i
+				}
+			}
+		}
+	}
+}
+if( self.frames.name == 'hat' ){
+	parent.attach_view_flg = false;
+}
+var hitcount=0;
+timerid = -1;
+function NaviCheck(version) {
+    if ((navigator.appName.indexOf("Netscape") >= 0)
+        &&
+        (version <= parseInt(navigator.appVersion.substring(0, 3))))
+    {
+        return true;
+    }else if ((navigator.appName.indexOf("Microsoft") >= 0)
+        &&
+        (version <= parseInt(navigator.appVersion.substring(0, 3))))
+    {
+        return true;
+    } else {
+        return false;
+    }
+}
+function get_view_no_of_timer( huid ){
+        if(parent.comp_sidebar == -1){
+			if(timerid != -1){
+				clearInterval(timerid)
+	        }
+	     }
+	get_view_no( '' );
+}
+function init_h(){
+    parent.hitp = -1;
+    parent.v_shi_hitp = -1;
+    parent.v_tou_hitp = -1;
+    parent.comp_hat = -1;
+}
+</SCRIPT>
+</BODY>
+</HTML>

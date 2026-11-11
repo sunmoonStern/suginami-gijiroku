@@ -1,0 +1,101 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML LANG="ja-JP">
+	<HEAD>
+		<META HTTP-EQUIV="Content-Type"			CONTENT="text/html; charset=Shift_JIS">
+		<META HTTP-EQUIV="Content-Language"		CONTENT="text/ja-JP">
+		<META HTTP-EQUIV="Content-Script-Type"	CONTENT="text/JavaScript">
+		<META HTTP-EQUIV="Content-Style-Type"	CONTENT="text/css">
+<TITLE></TITLE>
+<style TYPE="text/css">
+<!--
+body,table,td,th,tr,font {
+	font-family:'ＭＳ ゴシック';
+	font-size:100%;
+	letter-spacing:1px;
+	line-height:170%;
+}
+//-->
+</style>
+</HEAD>
+<BODY BGCOLOR="#ffffff" onLoad="init_h(); parent.hat.focus();">
+<SCRIPT LANGUAGE="JavaScript">
+var hitp = -1;
+	parent.comp_hat = 0;
+</SCRIPT>
+<A NAME="HUID436126"></A>令和　５年第１回臨時会<BR><BR>令和５年第１回臨時会<BR>　　　　　　　　　　杉　並　区　議　会　会　議　録　目　次<BR><BR>〇５月１９日（第８号）<BR>　出席議員　……………………………………………………………………………………１<BR>　出席説明員　…………………………………………………………………………………２<BR>　議事日程　……………………………………………………………………………………３<BR>　区長挨拶　……………………………………………………………………………………３<BR>　仮議席の指定について　……………………………………………………………………４<BR>　杉並区議会議長選挙について　……………………………………………………………４<BR>　議席の指定について　………………………………………………………………………６<BR>　会期について　………………………………………………………………………………６<BR><BR>〇５月２２日（第９号）<BR>　出席議員　……………………………………………………………………………………７<BR>　出席説明員　…………………………………………………………………………………８<BR>　議事日程　……………………………………………………………………………………９<BR>　杉並区議会副議長選挙について　…………………………………………………………９<BR>　常任委員会委員の選任について　………………………………………………………１１<BR>　議会運営委員会委員の選任について　…………………………………………………１１<BR>　特別委員会の設置について<BR>　　　　　　　動議（吉田あい議員）……………………………………………………１２<BR>　　　　　動議可決<BR>　特別委員会委員の選任について　………………………………………………………１２<BR>　議案第３１号　令和５年度杉並区一般会計補正予算（第２号）<BR>　　　　　提案説明（副区長）　…………………………………………………………１３<BR>　議案第３２号　杉並区監査委員（議員）の選任の同意について<BR>　　　　　提案説明（区長）　……………………………………………………………１４<BR>　　　　　　　質疑（奥山たえこ議員）　………………………………………………１５<BR>　　　　　　　答弁（区長）　……………………………………………………………１６<BR>　　　　　　　討論（奥山たえこ議員）　………………………………………………１７<BR>　　　　　原案同意<BR>　報告第２号　地方自治法第１７９条第１項の規定に基づき専決処分した令和４年度杉並区一般会計補正予算（第１０号）の報告及び承認について<BR>　　　　　報告説明（副区長）　…………………………………………………………１８<BR>　　　　　　　質疑（堀部やすし議員）　………………………………………………１９<BR>　　　　　　　答弁（子ども家庭部長）　………………………………………………２０<BR>　　　　　　再質疑（堀部やすし議員）　………………………………………………２２<BR>　　　　　　　答弁（政策経営部長）　…………………………………………………２３<BR>　東京都後期高齢者医療広域連合議会議員選挙候補者の推薦について　……………２４<BR>　　　　　推薦決定<BR>　総務財政委員会議案審査報告書　………………………………………………………２７<BR>　　議案第３１号<BR>　　　　　　　討論（ほらぐちともこ議員）　…………………………………………２７<BR>　　　　　　　討論（田中ゆうたろう議員）　…………………………………………２８<BR>　　　　　原案可決<BR>　閉会中の継続調査事項について　………………………………………………………２９<BR>　区長挨拶　…………………………………………………………………………………３２<BR>　議案説明資料　……………………………………………………………………………３３<BR><P><FORM METHOD="POST"><INPUT TYPE="hidden" NAME="hitcount" VALUE="0"></FORM>
+<SCRIPT LANGUAGE="JavaScript">
+function get_view_no( huid ){
+	var i;
+	var cnt;
+	if( self.frames.name == 'hat' ){
+		parent.v_n_no=null; parent.v_n_shi_no=null;		parent.v_b_no=null; parent.v_b_shi_no=null;		cnt = parent.huid_list.length;
+		for( i=0; i<cnt; i++ ){
+			if( parseInt( huid ) > parseInt( parent.huid_list[i] ) ){
+				parent.v_b_no= i
+			}else if( parseInt( huid ) < parseInt( parent.huid_list[i] ) ){
+				if( parent.v_n_no==null ){
+					parent.v_n_no= i
+				}
+			}
+		}
+		cnt = parent.huid_shi_list.length;
+		for( i=0; i<cnt; i++ ){
+			if( parseInt( huid ) > parseInt( parent.huid_shi_list[i] ) ){
+				parent.v_b_shi_no= i
+			}else if( parseInt( huid ) < parseInt( parent.huid_shi_list[i] ) ){
+				if( parent.v_n_shi_no==null ){
+					parent.v_n_shi_no= i
+				}
+			}
+		}
+	}
+	if( self.frames.name == 'hat_02' ){
+		parent.v_n_tou_no=null;		parent.v_b_tou_no=null;		cnt = parent.huid_tou_list.length;
+		for( i=0; i<cnt; i++ ){
+			if( parseInt( huid ) > parseInt( parent.huid_tou_list[i] ) ){
+				parent.v_b_tou_no= i
+			}else if( parseInt( huid ) < parseInt( parent.huid_tou_list[i] ) ){
+				if( parent.v_n_tou_no==null ){
+					parent.v_n_tou_no= i
+				}
+			}
+		}
+	}
+}
+if( self.frames.name == 'hat' ){
+	parent.attach_view_flg = false;
+}
+var hitcount=0;
+timerid = -1;
+function NaviCheck(version) {
+    if ((navigator.appName.indexOf("Netscape") >= 0)
+        &&
+        (version <= parseInt(navigator.appVersion.substring(0, 3))))
+    {
+        return true;
+    }else if ((navigator.appName.indexOf("Microsoft") >= 0)
+        &&
+        (version <= parseInt(navigator.appVersion.substring(0, 3))))
+    {
+        return true;
+    } else {
+        return false;
+    }
+}
+function get_view_no_of_timer( huid ){
+        if(parent.comp_sidebar == -1){
+			if(timerid != -1){
+				clearInterval(timerid)
+	        }
+	     }
+	get_view_no( '' );
+}
+function init_h(){
+    parent.hitp = -1;
+    parent.v_shi_hitp = -1;
+    parent.v_tou_hitp = -1;
+    parent.comp_hat = -1;
+}
+</SCRIPT>
+</BODY>
+</HTML>
