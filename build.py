@@ -143,6 +143,7 @@ INDEX_HTML = """<!doctype html>
   </div>
 </form>
 <p id="status"></p>
+<p id="sharebar" hidden><button id="share" type="button">この検索結果のURLをコピー</button><input id="shareurl" readonly hidden aria-label="共有用URL"></p>
 <div id="results"></div>
 <button id="more" hidden>さらに表示</button>
 <section id="browse"><h2>会議録一覧</h2><div id="list"></div></section>
@@ -179,6 +180,7 @@ button{font:inherit;padding:.5rem 1rem;border:0;border-radius:.6rem;background:v
 .hit a.sn b{color:var(--mut);font-weight:600;margin-right:.5em}.hit .rest{font-size:.8rem}
 mark{background:var(--hl);color:inherit;border-radius:2px}
 #more{display:block;margin:1rem auto}
+#sharebar{margin:0 0 .5rem}#share{font-size:.85rem;padding:.3rem .8rem;background:var(--card);color:var(--acc);border:1px solid var(--line)}#shareurl{display:block;width:100%;margin-top:.4rem;font:inherit;font-size:.8rem;padding:.3rem .5rem;border:1px solid var(--line);border-radius:.4rem;background:var(--card);color:var(--fg)}#shareurl[hidden]{display:none}
 #list details{border-bottom:1px solid var(--line)}#list summary{cursor:pointer;padding:.5rem 0;font-weight:600}
 #list h4{margin:.6rem 0 .1rem;font-size:.85rem;color:var(--mut)}
 #list ul{list-style:none;margin:0 0 .8rem;padding:0}#list li{display:flex;gap:.7rem;padding:.2rem 0;font-size:.92rem;line-height:1.5}
@@ -253,6 +255,7 @@ function run(){var my=++seq,q=$('q').value.trim(),terms=gjTerms(q),sp=gjNorm($('
  var a=+$('y0').value,b=+$('y1').value,lo=Math.min(a,b),hi=Math.max(a,b);
  var p=new URLSearchParams();if(q)p.set('q',q);if(k)p.set('k',k);if(sp)p.set('s',$('s').value.trim());if(years.length&&(lo!==years[years.length-1]||hi!==years[0])){p.set('y0',lo);p.set('y1',hi)}
  history.replaceState(null,'',p.toString()?'?'+p:location.pathname);
+ $('sharebar').hidden=!(terms.length||sp);$('shareurl').hidden=true;
  groups=[];shown=0;$('results').innerHTML='';$('more').hidden=true;$('browse').hidden=!!(terms.length||sp);
  if(!terms.length&&!sp){$('status').textContent='';return}
  var qs=encodeURIComponent(q),ys=years.filter(function(y){return y>=lo&&y<=hi}),nu=0,first=true;
@@ -264,6 +267,8 @@ function run(){var my=++seq,q=$('q').value.trim(),terms=gjTerms(q),sp=gjNorm($('
    if(shown<PAGE&&groups.length>before)render(terms,qs);else $('more').hidden=shown>=groups.length;
    setTimeout(function(){next(i+1)},0)},function(){$('status').textContent=ys[i]+'年のデータを読み込めませんでした。';})})(0);
  $('more').onclick=function(){render(terms,qs)}}
+// 共有用URLは日本語を%エンコードした形(location.href)でコピーする。Xなどは生の日本語の手前でリンクを切るため。
+$('share').onclick=function(){var u=location.href,b=this,i=$('shareurl');i.value=u;var ok=function(){b.textContent='コピーしました';setTimeout(function(){b.textContent='この検索結果のURLをコピー'},1500)};var fb=function(){i.hidden=false;i.focus();i.select()};try{if(navigator.clipboard&&navigator.clipboard.writeText)navigator.clipboard.writeText(u).then(ok,fb);else fb()}catch(e){fb()}};
 $('f').addEventListener('submit',function(e){e.preventDefault();run()});
 ['k','y0','y1'].forEach(function(id){$(id).addEventListener('change',run)});
 var P=new URLSearchParams(location.search);if(P.get('q'))$('q').value=P.get('q');if(P.get('k'))$('k').value=P.get('k');if(P.get('s'))$('s').value=P.get('s');if(P.get('y0'))$('y0').value=P.get('y0');if(P.get('y1'))$('y1').value=P.get('y1');
