@@ -26,6 +26,7 @@ HERE = os.path.dirname(os.path.abspath(__file__))
 RAW = os.path.join(HERE, "raw")
 INDEX = os.path.join(HERE, "index.json")
 KINDS = {1: "定例会", 2: "臨時会", 3: "委員会"}
+JST = datetime.timezone(datetime.timedelta(hours=9))
 
 ROW_RE = re.compile(
     r"</A>\s*([^<]*?),<A HREF=\"javascript:;\"[^>]*onClick=\"winopen\('([^']+)'\);\">([^<]*)</A>",
@@ -79,6 +80,25 @@ def list_year(year, kgtp):
     return rows
 
 
+def merge(index, rows, today):
+    """一覧の行を index に反映し、新しく現れた件数を返す。
+
+    新しい会議録には first_seen=today を付け(today が None なら付けない)、
+    既存の会議録の first_seen は引き継ぐ。
+    """
+    new = 0
+    for r in rows:
+        old = index.get(r["fino"])
+        if old is None:
+            new += 1
+            if today:
+                r["first_seen"] = today
+        elif "first_seen" in old:
+            r["first_seen"] = old["first_seen"]
+        index[r["fino"]] = r
+    return new
+
+
 def main():
     this_year = datetime.date.today().year
     ap = argparse.ArgumentParser()
@@ -94,15 +114,20 @@ def main():
     if os.path.exists(INDEX):
         with open(INDEX, encoding="utf-8") as f:
             index = {d["fino"]: d for d in json.load(f)}
+    # 公開の遅れを測るため、一覧に初めて現れた日を first_seen に記録する。
+    # index.json が無い初回は、いつ公開されたか分からないので記録しない。
+    stamp = bool(index)
+    today = datetime.datetime.now(JST).date().isoformat()
+    new = 0
 
     print(f"一覧を取得: {a.y0}〜{a.y1}年")
     for year in range(a.y1, a.y0 - 1, -1):
         for kgtp in (1, 2, 3):
             rows = list_year(year, kgtp)
-            for r in rows:
-                index[r["fino"]] = r
+            new += merge(index, rows, today if stamp else None)
             print(f"  {year}年 {KINDS[kgtp]}: {len(rows)}件")
             time.sleep(delay)
+    print(f"一覧に新しく現れた会議録: {new}件")
     docs = sorted(index.values(), key=lambda d: (d["date"], d["fino"]), reverse=True)
     with open(INDEX, "w", encoding="utf-8") as f:
         json.dump(docs, f, ensure_ascii=False, indent=0)
